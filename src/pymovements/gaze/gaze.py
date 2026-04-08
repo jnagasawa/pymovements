@@ -2370,6 +2370,9 @@ class Gaze:
         if time_unit == 's':
             self.samples = self.samples.with_columns(polars.col('time').mul(1000))
 
+        elif time_unit == 'us':
+            self.samples = self.samples.with_columns(polars.col('time').truediv(1000))
+
         elif time_unit == 'step':
             if self.experiment is not None:
                 self.samples = self.samples.with_columns(
@@ -2383,8 +2386,8 @@ class Gaze:
         elif time_unit != 'ms':
             raise ValueError(
                 f"unsupported time unit '{time_unit}'. "
-                "Supported units are 's' for seconds, 'ms' for milliseconds and "
-                "'step' for steps.",
+                "Supported units are 's' for seconds, 'ms' for milliseconds, "
+                "'us' for microseconds and 'step' for steps.",
             )
 
         # Convert to int if possible.
