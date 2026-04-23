@@ -147,6 +147,16 @@ def test_get_filepaths_expected_output(
             ],
             id='match_groups_two_files',
         ),
+        pytest.param(
+            re.compile(r'a/(?P<foo>\d+)_(?P<bar>\d+).ext'),
+            ['a'],
+            ['123_456.ext', '456_789.ext'],
+            [
+                {'foo': '123', 'bar': '456', 'filepath': str(Path('a/123_456.ext'))},
+                {'foo': '456', 'bar': '789', 'filepath': str(Path('a/456_789.ext'))},
+            ],
+            id='match_groups_relative_path',
+        ),
     ],
 )
 def test_match_filepaths(
